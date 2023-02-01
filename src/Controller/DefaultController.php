@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Objet;
 use App\Repository\ObjetRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -21,14 +22,29 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/create', name: 'api_create', methods: ['POST'])]
-    public function create(Request $request, EntityManager $manager): JsonResponse
+    public function create(Request $request, EntityManagerInterface $manager): JsonResponse
     {
-        $objet = new Objet();
+        $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['name']) || !isset($data['synopsis']) || !isset($data['type']) || !isset($data['release_date'])) {
+            return new JsonResponse(['error' => 'Les données sont incorrectes'], RESPONSE::HTTP_BAD_REQUEST);
+        }
 
-//        return new JsonResponse(['message' => 'Objet créé avec succès!'], status, headers, json);
-        return new JsonResponse(['message' => 'Objet créé avec succès!'], Response::HTTP_OK);
+        $object = new Objet();
+        $object
+            ->setName($data['name'])
+            ->setSynopsis($data['synopsis'])
+            ->setType($data['type'])
+            ->setReleaseDate(new \DateTime($data['release_date']));
+
+        $manager->persist($object);
+        $manager->flush();
+
+        return new JsonResponse(['message' => 'Objet créé avec succès!'], RESPONSE::HTTP_CREATED);
     }
 
     #[Route('/getAll', name: 'api_get_all', methods: ['GET'])]
