@@ -27,10 +27,10 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
             $objet[$i] = new Objet();
             $objet[$i]
-                ->setName("nom du film/série")
-                ->setSynopsis("lorem")
-                ->setType($type)
-                ->setReleaseDate(new \DateTime());
+                ->setName($faker->name)
+                ->setSynopsis($faker->realText(250))
+                ->setType($faker->randomElement(["film", "série"]))
+                ->setReleaseDate($faker->dateTimeBetween('-30 years', 'now'));
 
             $manager->persist($objet[$i]);
         }
