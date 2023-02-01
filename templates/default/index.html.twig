@@ -1,11 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Hello TestController!{% endblock %}
 
 {% block body %}
 
-    <div class="page">
-        <h1>Coucou</h1>
-    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <h1>FilmoRatio</h1>
+            </div>
+            <div class="col"></div>
+        </div>
 
+
+        <h3>Liste des films</h3>
+        <section class="section">
+            {% for objet in objets %}
+                {% if objet.type is same as("film") %}
+                    <div class="card-custom">
+                        <h5>{{ objet.name }}</h5>
+                        <p class="desc">{{ objet.synopsis }}</p>
+{#                        <p>{{ objet.release_date }}</p>#}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </section>
+
+        <hr>
+
+        <h3>Liste des séries</h3>
+        <section class="section">
+            {% for objet in objets %}
+                {% if objet.type is same as("série") %}
+                    <div class="card-custom">
+                        <h5>{{ objet.name }}</h5>
+                        <p class="desc">{{ objet.synopsis }}</p>
+{#                        <p>{{ objet.release_date }}</p>#}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </section>
+    </div>
 {% endblock %}

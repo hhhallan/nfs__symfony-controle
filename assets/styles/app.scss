@@ -1,0 +1,12 @@
+@import "custom";
+@import "~bootstrap/scss/bootstrap";
+
+
+body {
+    background-color: $light;
+    min-height: 100vh;
+}
+
+h1 {
+    color: $dark;
+}

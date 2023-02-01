@@ -12,17 +12,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
-
         $objet = Array();
-
-        // Randomiser le type
-        $types = array("film", "série");
-        $randIndex = rand(0, 1);
-        $type = $types[$randIndex];
-
-        // Random date
-        $timestamp = mt_rand(1, time());
-        $randomDate = date("d M Y", $timestamp);
 
         for ($i = 0; $i < 10; $i++) {
             $objet[$i] = new Objet();
@@ -34,7 +24,6 @@ class AppFixtures extends Fixture
 
             $manager->persist($objet[$i]);
         }
-
         $manager->flush();
     }
 }
